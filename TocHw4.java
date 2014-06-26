@@ -5,7 +5,7 @@ import java.util.*;
 import java.io.*;
 import org.json.*;
 
-public class TocHw4_v2 {
+public class TocHw4{
 
 	    public static void main(String[] args) throws Exception {
 	    	  // declare the variables 
