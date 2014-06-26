@@ -5,7 +5,7 @@ import java.util.*;
 import java.io.*;
 import org.json.*;
 
-public class TocHw4 {
+public class TocHw4_v2 {
 
 	    public static void main(String[] args) throws Exception {
 	    	  // declare the variables 
@@ -16,28 +16,34 @@ public class TocHw4 {
 	    	ArrayList<String> roadType1 = new ArrayList<String>();  // use for road has "路"
 	    	ArrayList<String> roadType2 = new ArrayList<String>();  // use for road has "街"
 	    	ArrayList<String> roadType3 = new ArrayList<String>();  // use for road has "巷"	    	
+	    	ArrayList<String> roadType4 = new ArrayList<String>();  // use for road has "大道"	 
 	    	ArrayList<Integer> yearType1 = new ArrayList<Integer>();  // use for year has "路"
 	    	ArrayList<Integer> yearType2 = new ArrayList<Integer>();  // use for year has "街"
-	    	ArrayList<Integer> yearType3 = new ArrayList<Integer>();  // use for year has "巷"	    	
+	    	ArrayList<Integer> yearType3 = new ArrayList<Integer>();  // use for year has "巷"
+	    	ArrayList<Integer> yearType4 = new ArrayList<Integer>();  // use for year has "大道"
 	    	ArrayList<Integer> priceType1 = new ArrayList<Integer>();  // use for price has "路"
 	    	ArrayList<Integer> priceType2 = new ArrayList<Integer>();  // use for price has "街"
 	    	ArrayList<Integer> priceType3 = new ArrayList<Integer>();  // use for price has "巷"
+	    	ArrayList<Integer> priceType4 = new ArrayList<Integer>();  // use for price has "大道"
 	    	  //variables for count same road name
 	    	int[] distMon1Num; // sale for distinct month which road has "路" count 
 	    	int[] distMon2Num; //  sale for distinct month which road has "街" count 
 	    	int[] distMon3Num; //  sale for distinct month which road has "巷" count 
+	    	int[] distMon4Num; //  sale for distinct month which road has "大道" count 
 	    	int maxNum1 = 0; // max count of the road has "路" sale in max distinct month
 	    	int maxNum2 = 0; // max count of the road has "街" sale in max distinct month
 	    	int maxNum3 = 0; // max count of the road has "巷" sale in max distinct month
+	    	int maxNum4 = 0; // max count of the road has "大道" sale in max distinct month
 	    	ArrayList<Integer> indexMax1 = new ArrayList<Integer>(); // index of max count of the road has "路" 
 	    	ArrayList<Integer> indexMax2 = new ArrayList<Integer>(); // index of max count of the road has "街" 
-	    	ArrayList<Integer> indexMax3 = new ArrayList<Integer>(); // index of max count of the road has "巷" 
+	    	ArrayList<Integer> indexMax3 = new ArrayList<Integer>(); // index of max count of the road has "巷"
+	    	ArrayList<Integer> indexMax4 = new ArrayList<Integer>(); // index of max count of the road has "大道" 
 	    	int maxOfAll = 0;  // find max count of all;
-	    	int whichIsMax = 0; // 1 => type1 is max  2 => type2 is max 3 =>type3 is max
+	    	int whichIsMax = 0; // 1 => type1 is max  2 => type2 is max 3 =>type3 is max 4 =>type4 is max
 	    	ArrayList<String> diffMaxRd1 = new ArrayList<String>();  // use for road has "路"(has max distinct month)
 	    	ArrayList<String> diffMaxRd2 = new ArrayList<String>();  // use for road has "街"(has max distinct month)
-	    	ArrayList<String> diffMaxRd3 = new ArrayList<String>();  // use for road has "巷"(has max distinct month)	  
-	    	
+	    	ArrayList<String> diffMaxRd3 = new ArrayList<String>();  // use for road has "巷"(has max distinct month)
+	    	ArrayList<String> diffMaxRd4 = new ArrayList<String>();  // use for road has "大道"(has max distinct month)
 	    	
 	    	  // handle url and get data of JSON type
 	        URL getUrl = new URL(url);
@@ -55,12 +61,14 @@ public class TocHw4 {
 	        }	
 	          //check has "路"，"街"，"巷",and assign to different type of road
 	        for(int j=0;j<jsonData.length();j++){
+	        	int flag = 0;
 	        	 if(roadJSON[j].contains("路")){
 	        		String[] roadSplit = roadJSON[j].split("路");
 	        		String roadStr = roadSplit[0]+"路";
 	        		roadType1.add(roadStr);
 	        		yearType1.add(yearJSON[j]);
 	        		priceType1.add(priceJSON[j]);
+	        		flag = 1;
 	        	 }
 	        	 if(roadJSON[j].contains("街")){
 		        	String[] roadSplit = roadJSON[j].split("街");
@@ -68,13 +76,24 @@ public class TocHw4 {
 		        	roadType2.add(roadStr);
 	        		yearType2.add(yearJSON[j]);
 	        		priceType2.add(priceJSON[j]);
+	        		flag =1;
 	        	 }
-	        	 if(roadJSON[j].contains("巷")){
-		        	String[] roadSplit = roadJSON[j].split("巷");
-		        	String roadStr = roadSplit[0]+"巷";
-		        	roadType3.add(roadStr);
-	        		yearType3.add(yearJSON[j]);
-	        		priceType3.add(priceJSON[j]);
+	        	 if(roadJSON[j].contains("大道")){
+		        	String[] roadSplit = roadJSON[j].split("大道");
+		        	String roadStr = roadSplit[0]+"大道";
+		        	roadType4.add(roadStr);
+	        		yearType4.add(yearJSON[j]);
+	        		priceType4.add(priceJSON[j]);
+	        		flag =1;
+	        	 }
+	        	 if(flag == 0){
+	        	   if(roadJSON[j].contains("巷")){
+		        	  String[] roadSplit = roadJSON[j].split("巷");
+		        	  String roadStr = roadSplit[0]+"巷";
+		        	  roadType3.add(roadStr);
+	        		  yearType3.add(yearJSON[j]);
+	        		  priceType3.add(priceJSON[j]);
+	        	   }
 	        	 }
 	        }
 	          // new array
@@ -165,6 +184,35 @@ public class TocHw4 {
     		    }
     		    distMon3Num[i] += monType3.size();
     	    } 
+     	      // new array
+	        distMon4Num = new int[roadType4.size()];
+	          // initialize array
+	        for(int i=0;i<distMon4Num.length;i++)
+	        	distMon4Num[i] = 0;
+	        
+     	    for(int i=0;i<roadType4.size();i++){
+  	    	  ArrayList<String> monType4 = new ArrayList<String>();
+  		      for(int j=0;j<roadType4.size();j++){
+  			     if(roadType4.get(i).equals(roadType4.get(j))){
+                      if(!yearType4.get(i).toString().equals(yearType4.get(j).toString())){
+                      	if(monType4.size()==0)
+                      		monType4.add(yearType4.get(j).toString());
+                      	if(monType4.size()>=1){
+                      		int diff = 1;
+                  		    for(int k=0;k<monType4.size();k++){
+                          		if(!monType4.get(k).equals(yearType4.get(j).toString()))
+                           		   diff *= 1;
+                          		else
+                          		   diff *= 0;
+                  		    }
+                  		    if(diff == 1)
+                  		        monType4.add(yearType4.get(j).toString());
+                      	}         		
+                      }
+  			      }		
+  		       }
+  		       distMon4Num[i] += monType4.size();
+  	        } 
        	    
        	      //find max count
        	    for(int i=0;i<distMon1Num.length;i++){
@@ -244,6 +292,32 @@ public class TocHw4 {
        	    		} 
        	    	}	
        	    }
+   	          //find max count
+   	        for(int i=0;i<distMon4Num.length;i++){
+   	    	   if(distMon4Num[i]>maxNum4){
+   	    		  maxNum4 = distMon4Num[i];
+   	        	}	
+   	        }
+   	          //check more than one road has max count
+     	    for(int i=0;i<distMon4Num.length;i++){
+     	    	if(distMon4Num[i] == maxNum4){
+     	    		indexMax4.add(i);
+     	    		if(diffMaxRd4.size()==0){
+     	    			diffMaxRd4.add(roadType4.get(i));
+     	    		}
+     	    		if(diffMaxRd4.size()>=1){
+     	    			int diff = 1;
+          		    for(int k=0;k<diffMaxRd4.size();k++){
+                  		if(!diffMaxRd4.get(k).equals(roadType4.get(i)))
+                   		   diff *= 1;
+                  		else
+                  		   diff *= 0;
+          		    }
+          		    if(diff == 1)
+          		        diffMaxRd4.add(roadType4.get(i));
+     	    		} 
+     	    	}	
+     	    }       	    
      	      // find max of all
      	    if(maxNum1 > maxOfAll){
      	    	maxOfAll = maxNum1;
@@ -256,6 +330,10 @@ public class TocHw4 {
      	    if(maxNum3 > maxOfAll){
      	    	maxOfAll = maxNum3;
      	    	whichIsMax = 3;
+     	    }
+    	    if(maxNum4 > maxOfAll){
+     	    	maxOfAll = maxNum4;
+     	    	whichIsMax = 4;
      	    }
      	    
      	    switch(whichIsMax){
@@ -305,6 +383,23 @@ public class TocHw4 {
      	    	    	  }
      	    	       }
      	    	       System.out.print(diffMaxRd3.get(k)+",  最高成交價:"+maxPrice+",  最低成交價:"+minPrice+"\n");
+     	        	}
+     	        	break;
+     	        }
+     	        case 4:{
+     	        	for(int k=0;k<diffMaxRd4.size();k++){
+     	   	    	   int maxPrice = priceType4.get(indexMax4.get(0));  
+     		    	   int minPrice = priceType4.get(indexMax4.get(0));
+     	    	       for(int i=0;i<indexMax4.size();i++){
+     	    	    	  if(roadType4.get(indexMax4.get(i)).equals(diffMaxRd4.get(k))){
+     	    	    		 System.out.println("price : "+priceType4.get(indexMax4.get(i)));
+     	    		         if(priceType4.get(indexMax4.get(i)) > maxPrice)
+     	    		        	 maxPrice = priceType4.get(indexMax4.get(i));
+     	    		    	 if(priceType4.get(indexMax4.get(i)) < minPrice)
+     	    		    	     minPrice = priceType4.get(indexMax4.get(i));
+     	    	    	  }
+     	    	       }
+     	    	       System.out.print(diffMaxRd4.get(k)+",  最高成交價:"+maxPrice+",  最低成交價:"+minPrice+"\n");
      	        	}
      	        	break;
      	        }
